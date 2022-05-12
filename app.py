@@ -13,9 +13,23 @@ app = Flask(__name__)
 def getStudents():
     return students
 
+@app.route("/get/students/<rollno>")
+def getInfo(rollno):
+    return students[f"{rollno}"]["name"]
 
-@app.route("/get/students/<id>")
-def getInfo(id):
-    return students[f"{id}"]["name"]                         
+@app.route("/post/students/<rollno>/<name>/<className>")
+def postInfo(rollno,name,className):
+    temp={"name":f"{name}","class":f"{className}"}
+    students[f"{rollno}"]=temp  
+    return "added"  
+
+@app.route("/put/students/<rollno>/<name>/<className>")
+def putInfo(rollno,name,className):
+    try:
+        students[f"{rollno}"]["name"]=f"{name}"
+        students[f"{rollno}"]["class"]=f"{className}"
+        return "updated"
+    except:
+        return "No student exist"
 if __name__=="__main__":
     app.run()
